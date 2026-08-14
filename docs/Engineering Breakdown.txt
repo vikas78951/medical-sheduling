@@ -1,7 +1,7 @@
 Engineering Breakdown
 │
 ├── Epic: Authentication & Access Control
-│   ├── Story: Patient email OTP login
+│   ├── Story: Patient email OTP login ------ IN_PROGRESS 
 │   └── Story: Admin/staff login & role-based access
 │
 ├── Epic: Content Management (CMS)
