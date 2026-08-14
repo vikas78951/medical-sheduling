@@ -1,0 +1,45 @@
+Engineering Breakdown
+│
+├── Epic: Authentication & Access Control
+│   ├── Story: Patient email OTP login
+│   └── Story: Admin/staff login & role-based access
+│
+├── Epic: Content Management (CMS)
+│   ├── Story: Services CRUD
+│   ├── Story: Team CRUD
+│   └── Story: Gallery CRUD
+│
+├── Epic: Appointment Booking Engine
+│   ├── Story: Slot management (hours, blocked dates)
+│   ├── Story: Real-time slot availability
+│   ├── Story: Book & pay for appointment
+│   └── Story: Cancel / reschedule appointment
+│
+├── Epic: Payments
+│   ├── Story: Razorpay integration & webhook
+│   ├── Story: Invoice generation
+│   └── Story: Payment history
+│
+├── Epic: Real-Time & Notifications
+│   ├── Story: Email notifications (confirm/reminder/receipt)
+│   └── Story: Live admin dashboard updates
+│
+├── Epic: Admin Operations
+│   ├── Story: Dashboard metrics
+│   └── Story: Patient records management
+│
+├── Epic: Patient Portal UI
+│   ├── Story: Auth & profile screens
+│   ├── Story: Booking flow screens
+│   └── Story: Appointments & payment history screens
+│
+├── Epic: Admin Panel UI
+│   ├── Story: Dashboard & appointments screens
+│   ├── Story: Patients & payments screens
+│   └── Story: Content management screens
+│
+└── Epic: Public Website & SEO
+    ├── Story: Home page
+    ├── Story: Content pages (About, Services, Team, Gallery)
+    ├── Story: Contact page
+    └── Story: SEO setup
