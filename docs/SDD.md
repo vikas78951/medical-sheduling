@@ -69,19 +69,56 @@ One codebase, one database, no server for you to babysit.
 ## 6. Core Schema
 
 ```sql
-patients          (id, name, dob, gender, phone, email, address, medical_history, created_at)
-staff             (id, name, role, department, photo_url)   -- role: 'doctor' | 'staff'
-services          (id, name, category, description, duration_min, price, icon_url)
-slots             (id, service_id, date, time, status)      -- available | held | booked
-appointments      (id, patient_id, service_id, slot_id, status, notes, created_at)
-payments          (id, appointment_id, amount, method, status, razorpay_order_id, invoice_url)
-contact_messages  (id, name, email, phone, message, created_at)
-gallery_items     (id, image_url, caption, category)
+
+users           (id, auth_user_id, first_name, last_name, email, phone, dob, gender, address, medical_history, photo_url,
+                role, department, created_at, updated_at)
+services        (id, name, category, description, duration_min, price, icon_url, created_at, updated_at)
+slots           (id, service_id, date, time, status, created_at)
+appointments    (id, patient_id, doctor_id, service_id, slot_id, status, notes, created_at, updated_at)
+payments        (id, appointment_id, amount, method, status, razorpay_order_id, razorpay_payment_id, 
+                invoice_url,created_at, updated_at)
+contact_messages(id, name, email, phone, message, created_at)
+gallery_items   (id, image_url, caption, category, created_at)
 
 -- key constraints
-UNIQUE (service_id, date, time)              on slots         -- blocks double-booking
-FK appointments.patient_id → patients.id
-FK appointments.slot_id    → slots.id
+PK: users.id
+FK: users.auth_user_id → auth.users.id
+UNIQUE: users.auth_user_id
+role: patient | doctor | staff | admin
+auth_user_id: nullable
+
+PK: services.id
+CONSTRAINTS: duration_min > 0 & price >= 0
+
+PK: slots.id
+FK: slots.service_id → services.id
+UNIQUE (service_id, date, time)              -- blocks double-booking
+status: available | held | booked
+
+PK: appointments.id
+FK: appointments.patient_id → users.id
+FK: appointments.doctor_id → users.id
+FK: appointments.service_id → services.id
+FK: appointments.slot_id → slots.id
+status: pending | confirmed | completed | cancelled | no_show
+
+-- role constraints
+patient_id → users.role = patient
+doctor_id  → users.role = doctor
+
+PK: payments.id
+FK: payments.appointment_id → appointments.id
+CONSTRAINTS: amount >= 0
+status: pending | paid | failed | refunded
+method: razorpay | cash | upi | card
+
+PK: contact_messages.id
+PK: gallery_items.id
+
+
+
+
+
 ```
 
 Row Level Security on every table: patients read/write only their own rows (`auth.uid() = patient_id`); `staff.role = 'doctor'` gets full access, `'staff'` gets a narrower policy that excludes `payments` and content tables. Enforce this in Postgres policies, not just in the UI.

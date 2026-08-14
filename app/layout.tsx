@@ -4,6 +4,10 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils";
 import { TanStackDevtoolsPanel } from "@/components/tanstack-devtool";
+import { Toaster } from "@/components/ui/toast"
+import StoreProvider from "./StoreProvider";
+import AuthListener from "@/components/auth/auth-listener"
+import Header from "@/components/header";
 
 const outfit = Outfit({ subsets: ['latin'], variable: '--font-sans' })
 
@@ -24,8 +28,17 @@ export default function RootLayout({
       className={cn("antialiased", fontMono.variable, "font-sans", outfit.variable)}
     >
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
-        <TanStackDevtoolsPanel/>
+        <ThemeProvider>
+          <StoreProvider>
+             <AuthListener />
+             <Header />
+            {children}
+          </StoreProvider>
+
+          <Toaster />
+
+        </ThemeProvider>
+        <TanStackDevtoolsPanel />
       </body>
     </html>
   )
